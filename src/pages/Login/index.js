@@ -40,5 +40,5 @@ export default function Login() {
             </form>
             </section>
         </div>
-    )
+    );
 }

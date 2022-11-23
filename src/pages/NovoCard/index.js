@@ -6,7 +6,7 @@ import api from '../../services/api';
 
 export default function NovoCard(){
     const [id,setId] = useState(null);
-    const [nome, setNome] = useState('');
+    const [title, setNome] = useState('');
     const [description, setDescription] = useState('');
     const [date_Preview, setDate] = useState('');
     const {cardId} = useParams();
@@ -23,7 +23,7 @@ export default function NovoCard(){
           return;
         else
             loadCard();
-    },[cardId,loadCard])
+    },[cardId])
 
      async function loadCard(){
         try{
@@ -34,7 +34,7 @@ export default function NovoCard(){
           setDescription(response.data.description);
           setDate(response.data.date_Preview);
         }catch(error){
-          alert('Erro ao recuperar a tarefa ' + error);
+          alert('Erro ao recuperar a tarefa ' + error)
           history('/tarefas');
         }
      }
@@ -42,7 +42,7 @@ export default function NovoCard(){
      async function saveOrUpdate(event) {
         event.preventDefault();
         const data = {
-           nome,
+           title,
            description,
            date_Preview
         }
@@ -55,12 +55,12 @@ export default function NovoCard(){
           else
           {
              data.id= id;
-             await api.put(`api/Card/${id}`,data,authorization)
+             await api.put(`api/Card/${id}`,data,authorization);
           }
         }catch(error){
-           alert('Erro ao gravar a tarefa ' + error);
+           alert('Erro ao gravar a tarefa ' + error)
         }
-        history('/tarefa/novo/0');
+        history('/tarefas');
     }
 
     return(
@@ -72,7 +72,7 @@ export default function NovoCard(){
             </section>
             
             <form onSubmit={saveOrUpdate}>
-               <input  placeholder="Nome" value={nome} onChange= {e=> setNome(e.target.value)}/>
+               <input  placeholder="Nome" value={title} onChange= {e=> setNome(e.target.value)}/>
                <input  placeholder="Descrição" value={description} onChange= {e=> setDescription(e.target.value)}/>
                <input  placeholder="Data Prevista (dd/mm/aaaa)" value={date_Preview} onChange= {e=> setDate(e.target.value)}/>
                <button className="button" type="submit">{cardId === '0'? 'Incluir ' : 'Atualizar '}</button>
